@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import QuickWatchButton from "@/components/wallet/QuickWatchButton";
+import RiskScoreDisclosure from "@/components/wallet/RiskScoreDisclosure";
 
 
 type Verdict = "safe" | "caution" | "danger";
@@ -117,10 +118,11 @@ function VerdictCard({ result }: { result: CheckResult }) {
               {result.network}
             </span>
             <span className="text-xs text-muted-foreground">
-              Risk score <span className={`font-bold text-lg ${meta.tone} tabular-nums`}>{result.risk_score}</span>
+              Rìan heuristic <span className={`font-bold text-lg ${meta.tone} tabular-nums`}>{result.risk_score}</span>
               <span className="text-muted-foreground/60">/100</span>
             </span>
           </div>
+          <div className="mt-2"><RiskScoreDisclosure /></div>
           {result.evidence_basis && (
             <div className="flex items-center gap-1.5 mt-3 text-[11px] text-muted-foreground/80">
               <Shield className="w-3.5 h-3.5 text-neon-cyan/70" />

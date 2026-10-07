@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { WalletRiskResponse } from '@/services/api';
+import RiskScoreDisclosure from './RiskScoreDisclosure';
 
 interface WalletOverviewTabProps {
   wallet: WalletRiskResponse;
@@ -13,7 +14,8 @@ export function WalletOverviewTab({ wallet }: WalletOverviewTabProps) {
     <div className="space-y-4">
       <Card>
         <CardHeader>
-          <CardTitle>Risk Score Breakdown</CardTitle>
+          <CardTitle>Rìan Heuristic Score Breakdown</CardTitle>
+          <RiskScoreDisclosure />
         </CardHeader>
         <CardContent>
           <div className="space-y-2">

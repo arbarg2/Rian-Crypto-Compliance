@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { WalletRiskResponse } from '@/services/api';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import RiskScoreDisclosure from './RiskScoreDisclosure';
 
 interface VerdictBannerProps {
   wallet: WalletRiskResponse;
@@ -79,7 +80,7 @@ const RiskGauge = ({ score, tier }: RiskGaugeProps) => {
           {Math.round(animated)}
         </div>
         <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
-          Risk Score
+          Rìan heuristic
         </div>
       </div>
     </div>
@@ -144,7 +145,7 @@ const VerdictBanner = ({ wallet }: VerdictBannerProps) => {
   if (sanctioned) {
     rationaleParts.push(`${ofacHits} direct OFAC SDN match${ofacHits === 1 ? '' : 'es'}`);
   } else {
-    rationaleParts.push(`Risk score ${Math.round(score)}/100`);
+    rationaleParts.push(`Rìan heuristic score ${Math.round(score)}/100`);
   }
   if (wallet.transaction_count) {
     rationaleParts.push(`${wallet.transaction_count.toLocaleString()} transactions analyzed`);
@@ -208,6 +209,7 @@ const VerdictBanner = ({ wallet }: VerdictBannerProps) => {
             {verdictHeadline}
           </h2>
           <p className="text-sm text-muted-foreground mt-2">{rationale}</p>
+          <div className="mt-2"><RiskScoreDisclosure /></div>
 
           <button
             onClick={copyAddress}
