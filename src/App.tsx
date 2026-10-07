@@ -10,6 +10,7 @@ import { DemoProvider } from "@/contexts/DemoContext";
 import Index from "./pages/Index";
 import Landing from "./pages/Landing";
 import CaseManagementPage from "./pages/CaseManagement";
+import ComplianceDashboard from "./pages/ComplianceDashboard";
 import NotFound from "./pages/NotFound";
 import ApiDocs from "./pages/ApiDocs";
 import BulkAnalysis from "./pages/BulkAnalysis";
@@ -43,6 +44,7 @@ const App = () => (
                 <Route path="/record/:recordId" element={<Index />} />
                 <Route path="/wallets/:recordId/flow" element={<WalletTransactionFlow />} />
                 <Route path="/cases" element={<CaseManagementPage />} />
+                <Route path="/compliance" element={<ComplianceDashboard />} />
                 <Route path="/all-records" element={<AllRecords />} />
                 <Route path="/bulk-analysis" element={<BulkAnalysis />} />
                 <Route path="/audit-logs" element={<AuditLogs />} />
