@@ -5,6 +5,7 @@ import {
   CheckCircle2, AlertTriangle, ShieldAlert, Users, Activity, Clock,
 } from "lucide-react";
 import ApprovalExposure, { type ApprovalSummary } from "./ApprovalExposure";
+import RiskScoreDisclosure from './RiskScoreDisclosure';
 
 export type Verdict = "safe" | "caution" | "danger";
 
@@ -82,6 +83,7 @@ export default function HealthReportView({ report }: { report: HealthReport }) {
             {report.risk_score}
             <span className="text-lg text-muted-foreground">/100</span>
           </div>
+          <RiskScoreDisclosure />
         </div>
       </Card>
 

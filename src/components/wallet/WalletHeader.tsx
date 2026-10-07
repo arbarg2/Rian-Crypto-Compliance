@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { UserDropdown } from '@/components/UserDropdown';
 import { WalletRiskResponse } from '@/services/api';
+import RiskScoreDisclosure from './RiskScoreDisclosure';
 
 interface WalletHeaderProps {
   wallet: WalletRiskResponse;
@@ -89,7 +90,7 @@ export function WalletHeader({ wallet, onBack, onViewFlow, onGenerateReport }: W
                 <div className="text-2xl font-bold text-slate-900">
                   {wallet.risk_score.toFixed(1)}/10
                 </div>
-                <div className="text-sm text-slate-600">Risk Score</div>
+                <RiskScoreDisclosure />
               </div>
             </div>
           </div>

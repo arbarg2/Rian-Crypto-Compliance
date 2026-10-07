@@ -16,6 +16,7 @@ import ReactMarkdown from 'react-markdown';
 import { toast } from 'sonner';
 import { createCase, updateCaseStatus, addCaseNote } from '@/services/caseManagement';
 import { logAuditAction } from '@/utils/auditLogger';
+import RiskScoreDisclosure from '@/components/wallet/RiskScoreDisclosure';
 
 type Rec = any;
 
@@ -240,7 +241,8 @@ function CaseDetail({ rec, onChange, reload }: { rec: Rec; onChange: (p: Partial
             <div className="font-mono text-sm break-all text-foreground">{rec.wallet_address}</div>
             <div className="text-xs text-muted-foreground mt-1 flex flex-wrap gap-2">
               <span className="uppercase">{rec.network}</span>
-              <span>Score {Number(rec.risk_score).toFixed(0)}</span>
+              <span>Rìan heuristic {Number(rec.risk_score).toFixed(0)}/100</span>
+              <RiskScoreDisclosure />
               <span>{rec.case_id || rec.record_id}</span>
               <span>Status: {statusLabel(rec.is_case ? rec.case_status : null)}</span>
             </div>
