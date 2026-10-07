@@ -419,11 +419,15 @@ export type Database = {
           assigned_to: string | null
           case_created_at: string | null
           case_id: string | null
+          case_priority: string
           case_status: string | null
           created_at: string
+          flag_reason: string | null
+          flagged_at: string | null
           id: string
           investigation_status: string | null
           is_case: boolean
+          is_flagged: boolean
           network: string
           record_id: string
           reviewed_at: string | null
@@ -446,11 +450,15 @@ export type Database = {
           assigned_to?: string | null
           case_created_at?: string | null
           case_id?: string | null
+          case_priority?: string
           case_status?: string | null
           created_at?: string
+          flag_reason?: string | null
+          flagged_at?: string | null
           id?: string
           investigation_status?: string | null
           is_case?: boolean
+          is_flagged?: boolean
           network: string
           record_id: string
           reviewed_at?: string | null
@@ -473,11 +481,15 @@ export type Database = {
           assigned_to?: string | null
           case_created_at?: string | null
           case_id?: string | null
+          case_priority?: string
           case_status?: string | null
           created_at?: string
+          flag_reason?: string | null
+          flagged_at?: string | null
           id?: string
           investigation_status?: string | null
           is_case?: boolean
+          is_flagged?: boolean
           network?: string
           record_id?: string
           reviewed_at?: string | null
