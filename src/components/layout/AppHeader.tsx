@@ -9,6 +9,7 @@ const navItems = [
   { label: 'Dashboard', to: '/dashboard' },
   { label: 'Records', to: '/all-records' },
   { label: 'Cases', to: '/cases' },
+  { label: 'Compliance', to: '/compliance' },
   { label: 'Bulk', to: '/bulk-analysis' },
   { label: 'Audit', to: '/audit-logs' },
   { label: 'API', to: '/api-docs' },
