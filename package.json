@@ -13,6 +13,7 @@
     "prebuild": "bunx tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
+    "@scarf/scarf": "^1.4.0",
     "@hookform/resolvers": "^3.9.0",
     "@lovable.dev/mcp-js": "^0.26.1",
     "@radix-ui/react-accordion": "^1.2.0",
