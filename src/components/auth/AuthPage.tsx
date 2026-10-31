@@ -10,6 +10,7 @@ import { Shield, Mail, Lock, UserPlus, LogIn, ArrowLeft, CheckCircle, AlertCircl
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { lovable } from '@/integrations/lovable/index';
 
 export function AuthPage() {
   const location = useLocation();
@@ -37,13 +38,35 @@ export function AuthPage() {
 
   useEffect(() => {
     if (user) {
-      if (safeNext) {
-        window.location.href = safeNext;
+      const storedNext = sessionStorage.getItem('post_auth_next');
+      sessionStorage.removeItem('post_auth_next');
+      const target = safeNext || (storedNext && /^\/(?!\/)/.test(storedNext) ? storedNext : null);
+      if (target) {
+        window.location.href = target;
       } else {
         navigate('/dashboard');
       }
     }
   }, [user, navigate, safeNext]);
+
+  const handleOAuth = async (provider: 'google' | 'microsoft') => {
+    setIsLoading(true);
+    if (safeNext) sessionStorage.setItem('post_auth_next', safeNext);
+    const result = await lovable.auth.signInWithOAuth(provider, {
+      redirect_uri: window.location.origin + '/auth',
+    });
+    if (result.error) {
+      setIsLoading(false);
+      toast({
+        title: 'Sign-in failed',
+        description: result.error.message || 'Please try again.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    if (result.redirected) return;
+    setIsLoading(false);
+  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -287,6 +310,23 @@ export function AuthPage() {
                     </Button>
                   </form>
                 </TabsContent>
+                <div className="mt-6 space-y-3">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <div className="h-px flex-1 bg-border" />
+                    or continue with
+                    <div className="h-px flex-1 bg-border" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button type="button" variant="outline" disabled={isLoading} onClick={() => handleOAuth('google')}>
+                      <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.35 11.1H12v2.98h5.35c-.23 1.5-1.7 4.4-5.35 4.4-3.22 0-5.85-2.67-5.85-5.96S8.78 6.56 12 6.56c1.83 0 3.06.78 3.76 1.45l2.56-2.47C16.68 4 14.55 3 12 3 6.98 3 2.9 7.03 2.9 12s4.08 9 9.1 9c5.25 0 8.73-3.69 8.73-8.89 0-.6-.07-1.05-.15-1.51z"/></svg>
+                      Google
+                    </Button>
+                    <Button type="button" variant="outline" disabled={isLoading} onClick={() => handleOAuth('microsoft')}>
+                      <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 3h8.5v8.5H3zM12.5 3H21v8.5h-8.5zM3 12.5h8.5V21H3zM12.5 12.5H21V21h-8.5z"/></svg>
+                      Microsoft
+                    </Button>
+                  </div>
+                </div>
               </Tabs>
             )}
           </CardContent>

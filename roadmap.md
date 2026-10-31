@@ -5,5 +5,5 @@
 - [ ] Verify disclosure navigation and displayed labels.
 # Sign-in
 
-- [ ] Google sign-in button
-- [ ] Microsoft sign-in button
+- [x] Google sign-in button
+- [x] Microsoft sign-in button
