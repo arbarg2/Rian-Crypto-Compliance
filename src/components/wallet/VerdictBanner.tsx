@@ -5,6 +5,7 @@ import { ShieldAlert, AlertTriangle, Activity, Network, Clock, Hash, Copy, Check
 import { Mono, truncateMiddle } from '@/components/ui/mono';
 import { riskTier, riskLabel, riskClasses, riskTierFromLevel, type RiskTier } from '@/lib/risk';
 import { supabase } from '@/integrations/supabase/client';
+import { lookupSanctionsAddress } from '@/services/referenceLookup';
 import { WalletRiskResponse } from '@/services/api';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';

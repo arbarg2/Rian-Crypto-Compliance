@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, ShieldAlert, ShieldCheck, ExternalLink, Loader2, Target, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { lookupSanctionsAddress } from '@/services/referenceLookup';
 import { Mono } from '@/components/ui/mono';
 import { SanctionsMatch } from '@/services/riskFactors';
 

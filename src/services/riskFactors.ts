@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { lookupSanctionsAddress } from '@/services/referenceLookup';
 import { WalletRiskResponse } from './api';
 import { sanctionsScreeningService, SanctionsResult } from './sanctionsApi';
 

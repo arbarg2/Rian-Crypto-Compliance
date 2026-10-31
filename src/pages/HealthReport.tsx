@@ -5,6 +5,7 @@ import { Shield, Loader2, ArrowRight, FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchHealthReport } from "@/services/referenceLookup";
 import HealthReportView, { type HealthReport as Report } from "@/components/wallet/HealthReportView";
 
 export default function HealthReportPage() {

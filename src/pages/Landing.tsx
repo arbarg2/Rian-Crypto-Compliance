@@ -13,6 +13,7 @@ import EarlyAccessModal from '@/components/auth/EarlyAccessModal';
 import { QuickStartDemo } from '@/components/QuickStartDemo';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { fetchRecentPublicChecks } from '@/services/referenceLookup';
 
 interface TickerItem {
   addr: string;
