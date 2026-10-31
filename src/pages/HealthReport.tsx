@@ -5,6 +5,7 @@ import { Shield, Loader2, ArrowRight, FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchHealthReport } from "@/services/referenceLookup";
 import HealthReportView, { type HealthReport as Report } from "@/components/wallet/HealthReportView";
 
 export default function HealthReportPage() {
@@ -17,13 +18,9 @@ export default function HealthReportPage() {
     let cancelled = false;
     (async () => {
       if (!id) return setState("missing");
-      const { data, error } = await supabase
-        .from("health_reports")
-        .select("report, created_at")
-        .eq("id", id)
-        .maybeSingle();
+      const data = await fetchHealthReport(id);
       if (cancelled) return;
-      if (error || !data?.report) {
+      if (!data?.report) {
         setState("missing");
         return;
       }

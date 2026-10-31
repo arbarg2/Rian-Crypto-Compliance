@@ -32,7 +32,33 @@ serve(async (req) => {
     }
 
     const ALLOWED_NETWORKS = ["bitcoin", "ethereum", "solana"];
-    const { network, address, data } = await req.json();
+    const { action, network, address, data } = await req.json();
+
+    if (action === "read") {
+      if (
+        !ALLOWED_NETWORKS.includes(String(network)) ||
+        typeof address !== "string" || address.length > 128 || !/^[a-zA-Z0-9:_-]+$/.test(address)
+      ) {
+        return new Response(JSON.stringify({ error: "invalid fields" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const admin = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      );
+      const { data: row } = await admin
+        .from("wallet_cache")
+        .select("data, expires_at")
+        .eq("network", network)
+        .ilike("address", address)
+        .gt("expires_at", new Date().toISOString())
+        .maybeSingle();
+      return new Response(JSON.stringify(row ?? null), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     if (!network || !address || data === undefined || !ALLOWED_NETWORKS.includes(String(network))) {
       return new Response(JSON.stringify({ error: "invalid fields" }), {
         status: 400,

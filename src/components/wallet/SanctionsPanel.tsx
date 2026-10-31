@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, ShieldAlert, ShieldCheck, ExternalLink, Loader2, Target, Globe } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { lookupSanctionsAddress } from '@/services/referenceLookup';
 import { Mono } from '@/components/ui/mono';
 import { SanctionsMatch } from '@/services/riskFactors';
 
@@ -33,17 +34,13 @@ const SanctionsPanel = ({ walletAddress, network, matches }: SanctionsPanelProps
     let cancelled = false;
     const run = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('sanctions_addresses')
-        .select('id, address, network, source_list, program, entity_name, date_listed, metadata')
-        .eq('network', network.toLowerCase())
-        .ilike('address', walletAddress);
+      const { hits: data, error } = await lookupSanctionsAddress(walletAddress, network);
       if (cancelled) return;
       if (error) {
         console.error('Sanctions hits query failed:', error);
         setHits([]);
       } else {
-        setHits(data || []);
+        setHits((data || []) as SanctionsHit[]);
       }
       setCheckedAt(new Date());
       setLoading(false);

@@ -13,6 +13,7 @@ import EarlyAccessModal from '@/components/auth/EarlyAccessModal';
 import { QuickStartDemo } from '@/components/QuickStartDemo';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { fetchRecentPublicChecks } from '@/services/referenceLookup';
 
 interface TickerItem {
   addr: string;
@@ -38,11 +39,7 @@ const Landing = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data } = await supabase
-        .from('public_checks')
-        .select('address, network, verdict, risk_score, created_at')
-        .order('created_at', { ascending: false })
-        .limit(12);
+      const data = await fetchRecentPublicChecks();
       if (cancelled || !data?.length) return;
       setTickerItems(
         data.map((c: any) => ({

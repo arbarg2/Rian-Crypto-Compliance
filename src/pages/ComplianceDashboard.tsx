@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { lookupSanctionsAddress } from '@/services/referenceLookup';
 import { useAuth } from '@/contexts/AuthContext';
 import { AppHeader } from '@/components/layout/AppHeader';
 import AgentTracePanel from '@/components/agent/AgentTracePanel';
@@ -175,11 +176,11 @@ function CaseDetail({ rec, onChange, reload }: { rec: Rec; onChange: (p: Partial
   useEffect(() => {
     (async () => {
       const [a, s, d] = await Promise.all([
-        supabase.from('sanctions_addresses').select('*').ilike('address', rec.wallet_address),
+        lookupSanctionsAddress(rec.wallet_address),
         supabase.from('sanctions_screening').select('*').eq('lookup_record_id', rec.id).order('screening_date', { ascending: false }),
         supabase.from('sar_drafts').select('*').eq('record_id', rec.id).order('created_at', { ascending: false }).limit(1).maybeSingle(),
       ]);
-      setOfac(a.data || []);
+      setOfac(a.hits || []);
       setScreens(s.data || []);
       setSar(d.data || null);
     })();
