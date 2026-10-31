@@ -8,6 +8,13 @@
       "when": 1791371767397,
       "tag": "0000_case_flags",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793437126784,
+      "tag": "0001_restrict_open_read_policies",
+      "breakpoints": true
     }
   ]
 }
