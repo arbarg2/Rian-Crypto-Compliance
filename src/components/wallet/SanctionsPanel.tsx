@@ -33,17 +33,13 @@ const SanctionsPanel = ({ walletAddress, network, matches }: SanctionsPanelProps
     let cancelled = false;
     const run = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('sanctions_addresses')
-        .select('id, address, network, source_list, program, entity_name, date_listed, metadata')
-        .eq('network', network.toLowerCase())
-        .ilike('address', walletAddress);
+      const { hits: data, error } = await lookupSanctionsAddress(walletAddress, network);
       if (cancelled) return;
       if (error) {
         console.error('Sanctions hits query failed:', error);
         setHits([]);
       } else {
-        setHits(data || []);
+        setHits((data || []) as SanctionsHit[]);
       }
       setCheckedAt(new Date());
       setLoading(false);

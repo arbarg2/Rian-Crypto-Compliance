@@ -108,13 +108,11 @@ class RealBlockchainAPI {
 
   private async getCached<T>(network: string, address: string): Promise<T | null> {
     try {
-      const { data } = await supabase
-        .from('wallet_cache')
-        .select('data, expires_at')
-        .eq('network', network)
-        .ilike('address', address)
-        .gt('expires_at', new Date().toISOString())
-        .maybeSingle();
+      const { data: session } = await supabase.auth.getSession();
+      if (!session.session) return null; // cache is only available to signed-in users
+      const { data } = await supabase.functions.invoke('wallet-cache-write', {
+        body: { action: 'read', network, address },
+      });
       if (data?.data) {
         console.log(`⚡ [CACHE HIT] ${network}:${address}`);
         return data.data as T;

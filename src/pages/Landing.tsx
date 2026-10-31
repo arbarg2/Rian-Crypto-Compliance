@@ -38,11 +38,7 @@ const Landing = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const { data } = await supabase
-        .from('public_checks')
-        .select('address, network, verdict, risk_score, created_at')
-        .order('created_at', { ascending: false })
-        .limit(12);
+      const data = await fetchRecentPublicChecks();
       if (cancelled || !data?.length) return;
       setTickerItems(
         data.map((c: any) => ({

@@ -212,11 +212,7 @@ class RiskFactorsService {
       const results: SanctionsResult[] = [];
 
       // 1. Direct match against OFAC SDN address list (case-insensitive)
-      const { data: directMatches, error } = await supabase
-        .from('sanctions_addresses')
-        .select('address, source_list, entity_name, program, network')
-        .eq('network', network.toLowerCase())
-        .ilike('address', walletAddress);
+      const { hits: directMatches, error } = await lookupSanctionsAddress(walletAddress, network);
 
       if (error) {
         console.error('Sanctions DB query failed:', error);

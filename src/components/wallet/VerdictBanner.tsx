@@ -116,13 +116,9 @@ const VerdictBanner = ({ wallet }: VerdictBannerProps) => {
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
-      const { count, error } = await supabase
-        .from('sanctions_addresses')
-        .select('id', { count: 'exact', head: true })
-        .eq('network', wallet.network.toLowerCase())
-        .ilike('address', wallet.address);
+      const { hits, error } = await lookupSanctionsAddress(wallet.address, wallet.network);
       if (cancelled) return;
-      setOfacHits(error ? 0 : (count ?? 0));
+      setOfacHits(error ? null : hits.length);
     };
     if (wallet.address && wallet.network) run();
     return () => { cancelled = true; };
